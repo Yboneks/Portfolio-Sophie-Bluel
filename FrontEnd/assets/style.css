@@ -98,6 +98,15 @@ nav li {
 li:hover {
 	color: #B1663C;
 }
+
+li a {
+	text-decoration: none;
+}
+
+li a:visited {
+	color: black;
+}
+
 #introduction {
 	display: flex;
 	align-items: center;
@@ -208,5 +217,99 @@ footer nav ul {
 	display: flex;
 	justify-content: flex-end;
 	margin: 2em
+}
+
+/* Page de login */
+
+body.login-page {                
+  background-color: #FFFEF8;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main.login-part {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;       
+  padding: 2rem;
+}
+
+main.login-part h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 32px;               
+  font-weight: 700;
+  color: #1D6154;
+  margin-bottom: 2.5rem;
+  text-align: center;
+  letter-spacing: .5px;
+}
+
+
+main.login-part form {
+  width: 100%;
+  max-width: 380px;              
+  display: flex;
+  flex-direction: column;
+}
+
+main.login-part label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  font-size: 14px;
+  color: #1D1D1D;
+  text-align: left;
+}
+
+main.login-part input {
+  margin-top: .5rem;
+  padding: 0.9rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #E8E8E8;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.04);
+  background-color: #FFFFFF;
+  margin-bottom: 2rem;
+}
+
+main.login-part input:focus {
+  outline: none;
+  border-color: #1D6154;
+  box-shadow: 0 0 0 3px rgba(29,97,84,.25);
+}
+
+
+main.login-part button {
+  width: 180px;                   
+  align-self: center;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 30px;            
+  background-color: #1D6154;
+  color: #FFF;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color .2s ease;
+}
+
+main.login-part button:hover {
+  background-color: #14483F;      
+}
+
+main.login-part a.forgot {
+  margin-top: .8rem;
+  font-size: 0.85rem;
+  color: #1D1D1D;
+  text-decoration: underline;
+  align-self: center;
+}
+
+main.login-part a.forgot:hover {
+  text-decoration-thickness: 2px;
 }
 
