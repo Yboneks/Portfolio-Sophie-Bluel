@@ -21,8 +21,6 @@ async function fetchData() {
   }
 }
 
-fetchData();
-
 function displayWorks(works) {
   gallery.innerHTML = "";
 
@@ -78,3 +76,46 @@ function setupFilterListeners() {
     });
   });
 }
+
+// Vérification de connexion + btn déconnexion + bannière + btn pour modale
+
+function checkLoginStatus() {
+  const token = sessionStorage.getItem("token");
+  const loginLink = document.getElementById("login-link");
+
+  if (!token) return;
+
+  loginLink.textContent = "logout";
+  loginLink.href = "#";
+  loginLink.addEventListener("click", (e) => {
+    e.preventDefault();
+    sessionStorage.removeItem("token");
+    window.location.reload();
+  });
+
+  const banner = document.createElement("div");
+  banner.className = "admin-banner";
+  banner.innerHTML = `<p><i class="fa-regular fa-pen-to-square"></i> Mode édition</p>`;
+  document.body.prepend(banner);
+
+  const galleryHeader = document.querySelector(".gallery-header");
+
+  if (galleryHeader) {
+    const editBtn = document.createElement("a");
+    editBtn.href = "#";
+    editBtn.className = "edit-button";
+    editBtn.innerHTML = `<i class="fa-regular fa-pen-to-square"></i> modifier`;
+    galleryHeader.appendChild(editBtn);
+
+    editBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      openModal();
+    });
+  }
+}
+
+// Lancement des fonctions au chargement de la page
+document.addEventListener("DOMContentLoaded", () => {
+  fetchData();
+  checkLoginStatus();
+});

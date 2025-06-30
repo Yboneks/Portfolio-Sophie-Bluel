@@ -107,6 +107,14 @@ li a:visited {
 	color: black;
 }
 
+#login-link {
+	color: black;
+}
+
+#login-link:hover {
+	color: #B1663C;
+}
+
 #introduction {
 	display: flex;
 	align-items: center;
@@ -172,7 +180,7 @@ li a:visited {
 
 #contact {
 	width: 50%;
-margin: auto;
+	margin: auto;
 }
 #contact > * {
 	text-align: center;
@@ -253,6 +261,7 @@ main.login-part form {
   max-width: 380px;              
   display: flex;
   flex-direction: column;
+  text-align: center;
 }
 
 main.login-part label {
@@ -282,7 +291,7 @@ main.login-part input:focus {
 }
 
 
-main.login-part button {
+main.login-part input[type="submit"] {
   width: 180px;                   
   align-self: center;
   padding: 0.75rem 1rem;
@@ -294,22 +303,59 @@ main.login-part button {
   font-weight: 700;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color .2s ease;
+  margin-bottom: 1rem;
 }
 
-main.login-part button:hover {
+main.login-part input[type="submit"]:hover {
   background-color: #14483F;      
 }
 
-main.login-part a.forgot {
-  margin-top: .8rem;
-  font-size: 0.85rem;
-  color: #1D1D1D;
-  text-decoration: underline;
-  align-self: center;
+.login-part p a{
+	text-decoration: underline;
+	text-align: center;
 }
 
-main.login-part a.forgot:hover {
-  text-decoration-thickness: 2px;
+.login-part p a:visited{
+	color: black;
 }
 
+/* Bannière mode édition */
+.admin-banner {
+  background-color: black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  height: 40px;
+  font-size: 16px;
+}
+
+/* Btn pour modale */
+
+.gallery-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.gallery-header h2 {
+  font-size: 26px;
+  font-weight: bold;
+}
+
+.edit-button {
+  font-size: 14px;
+  color: #000;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.edit-button i {
+  font-size: 14px;
+}
