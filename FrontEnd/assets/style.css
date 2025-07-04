@@ -359,3 +359,203 @@ main.login-part input[type="submit"]:hover {
 .edit-button i {
   font-size: 14px;
 }
+
+/* Modal */
+
+
+/* Overlay sombre */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+/* Boîte modale */
+.modal-wrapper {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 32px rgba(44, 62, 80, 0.15);
+  padding: 2.5rem 2rem 2rem 2rem;
+  max-width: 430px;
+  width: 100%;
+  position: relative;
+  font-family: 'Montserrat', Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Titre */
+.modal-wrapper h3 {
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 2.2rem;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+/* Bouton fermeture (croix) */
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #333;
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.modal-close:hover {
+  color: #1D6154;
+}
+
+/* Galerie de miniatures */
+.modal-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-start;
+  margin-bottom: 2.2rem;
+  width: 100%;
+}
+
+.modal-figure {
+  position: relative;
+  width: 78px;
+  height: 104px;
+}
+
+.modal-figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 3px;
+  background: #f6f6f6;
+  border: 1px solid #e4e4e4;
+}
+
+.delete-work-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: #fff;
+  border: none;
+  border-radius: 50%;
+  color: #b1663c;
+  font-size: 1rem;
+  padding: 0.3em;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  transition: background 0.2s, color 0.2s;
+}
+.delete-work-btn:hover {
+  background: #ffe5d0;
+  color: #e74c3c;
+}
+
+/* Bouton "Ajouter une photo" */
+.modal-add-btn,
+.modal-submit-btn {
+  background: #1D6154;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  padding: 0.8rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  width: 70%;
+  margin: 0 auto;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: block;
+}
+.modal-add-btn:hover,
+.modal-submit-btn:hover {
+  background: #14443a;
+}
+
+/* Formulaire d'ajout */
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  width: 100%;
+  align-items: stretch;
+}
+
+.modal-form label {
+  font-weight: 500;
+  color: #1D6154;
+  margin-bottom: 0.15rem;
+}
+
+.modal-form input[type="text"],
+.modal-form select {
+  border: 1px solid #b9c5cc;
+  border-radius: 8px;
+  padding: 0.7rem;
+  font-size: 1rem;
+  background: #f6f6f6;
+  color: #333;
+}
+
+.modal-form input[type="file"] {
+  display: none;
+}
+
+.modal-form .custom-file-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #e8f1f6;
+  border-radius: 4px;
+  height: 170px;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  color: #b9c5cc;
+  font-size: 0.95rem;
+  border: none;
+  position: relative;
+}
+
+.modal-form .custom-file-label i {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: #b9c5cc;
+}
+
+.modal-form .file-preview {
+  width: 100%;
+  height: 170px;
+  object-fit: contain;
+  border-radius: 4px;
+  background: #e8f1f6;
+  margin-bottom: 1rem;
+}
+
+/* Bouton retour */
+.modal-back-btn {
+  background: none;
+  border: none;
+  color: #333;
+  font-size: 1.2rem;
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.modal-back-btn:hover {
+  color: #1D6154;
+}

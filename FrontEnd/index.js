@@ -14,8 +14,8 @@ async function fetchData() {
     // Catégorie
     const catRes = await fetch("http://localhost:5678/api/categories");
     const categories = await catRes.json();
-    createFilterButtons(categories); // Crée les boutons de filtre
-    setupFilterListeners(); // Active les filtres
+    createFilterButtons(categories);
+    setupFilterListeners();
   } catch (error) {
     console.error("Erreur de chargement des données :", error);
   }
@@ -119,3 +119,193 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchData();
   checkLoginStatus();
 });
+
+// Modal avec suppression et ajout des travaux de manière dynamique
+
+const modal = document.getElementById("modal");
+const modalWrapper = modal.querySelector(".modal-wrapper");
+const modalCloseBtn = modal.querySelector(".modal-close");
+const modalGallery = document.getElementById("modal-gallery");
+
+function openModal() {
+  modal.classList.remove("hidden");
+  modal.setAttribute("aria-hidden", "false");
+  displayModalWorks();
+}
+
+function closeModal() {
+  modal.classList.add("hidden");
+  modal.setAttribute("aria-hidden", "true");
+}
+
+modalCloseBtn.addEventListener("click", closeModal);
+
+modal.addEventListener("click", function (e) {
+  if (e.target === modal) closeModal();
+});
+
+// Afficher les travaux dans la modal
+function displayModalWorks() {
+  modalGallery.innerHTML = "";
+  allWorks.forEach((work) => {
+    const figure = document.createElement("figure");
+    figure.classList.add("modal-figure");
+
+    const img = document.createElement("img");
+    img.src = work.imageUrl;
+    img.alt = work.title;
+
+    const trashBtn = document.createElement("button");
+    trashBtn.classList.add("delete-work-btn");
+    trashBtn.setAttribute("aria-label", "Supprimer ce travail");
+    trashBtn.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
+    trashBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      deleteWork(work.id, figure);
+    });
+
+    figure.appendChild(img);
+    figure.appendChild(trashBtn);
+    modalGallery.appendChild(figure);
+  });
+
+  const addBtn = document.createElement("button");
+  addBtn.id = "open-add-photo";
+  addBtn.className = "modal-add-btn";
+  addBtn.textContent = "Ajouter une photo";
+  addBtn.addEventListener("click", showAddPhotoForm);
+  modalGallery.appendChild(addBtn);
+}
+
+// On supprime le travail
+
+async function deleteWork(workId, figureElem) {
+  const token = sessionStorage.getItem("token");
+  if (!token) {
+    alert("Vous devez être connecté pour supprimer un travail.");
+    return;
+  }
+
+  if (!confirm("Voulez-vous vraiment supprimer ce travail ?")) return;
+
+  try {
+    const res = await fetch(`http://localhost:5678/api/works/${workId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.ok) {
+      figureElem.remove();
+
+      allWorks = allWorks.filter((w) => w.id !== workId);
+      displayWorks(allWorks);
+    } else {
+      alert("Erreur lors de la suppression.");
+    }
+  } catch (error) {
+    alert("Erreur réseau.");
+  }
+}
+
+function showAddPhotoForm() {
+  modalGallery.innerHTML = `
+    <button type="button" id="back-to-gallery" class="modal-back-btn" aria-label="Retour à la galerie">
+      <i class="fa-solid fa-arrow-left"></i>
+    </button>
+    <form id="add-photo-form" class="modal-form">
+      <label for="photo-file" class="custom-file-label">
+        <i class="fa-regular fa-image"></i>
+        <span>+ Ajouter photo</span>
+        <span class="file-info">jpg, png : 4mo max</span>
+        <input type="file" id="photo-file" name="image" accept="image/*" required>
+      </label>
+      <img id="file-preview" class="file-preview" style="display:none;">
+      <label for="photo-title">Titre</label>
+      <input type="text" id="photo-title" name="title" required>
+      <label for="photo-category">Catégorie</label>
+      <select id="photo-category" name="category" required>
+        <option value="">Sélectionner une catégorie</option>
+      </select>
+      <button type="submit" class="modal-submit-btn">Valider</button>
+    </form>
+  `;
+
+  // Récupération des catégories pour la modal
+
+  fetch("http://localhost:5678/api/categories")
+    .then((response) => response.json())
+    .then((categories) => {
+      const select = document.getElementById("photo-category");
+      categories.forEach((cat) => {
+        const option = document.createElement("option");
+        option.value = cat.id;
+        option.textContent = cat.name;
+        select.appendChild(option);
+      });
+    })
+    .catch((error) => {
+      console.error("Erreur lors de la récupération des catégories :", error);
+    });
+
+  // Aperçu de l'image dans la modale
+
+  const fileInput = document.getElementById("photo-file");
+  const filePreview = document.getElementById("file-preview");
+  fileInput.addEventListener("change", function () {
+    if (this.files && this.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        filePreview.src = e.target.result;
+        filePreview.style.display = "block";
+      };
+      reader.readAsDataURL(this.files[0]);
+    }
+  });
+
+  // Bouton retour pour revenir à la page 1 de la modal
+  document
+    .getElementById("back-to-gallery")
+    .addEventListener("click", displayModalWorks);
+
+  const addPhotoForm = document.getElementById("add-photo-form");
+  addPhotoForm.addEventListener("submit", handleAddPhotoSubmit);
+}
+
+async function handleAddPhotoSubmit(e) {
+  e.preventDefault();
+
+  const token = sessionStorage.getItem("token");
+  if (!token) {
+    alert("Vous devez être connecté.");
+    return;
+  }
+
+  const form = e.target;
+  const formData = new FormData(form);
+
+  try {
+    const response = await fetch("http://localhost:5678/api/works", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    if (response.ok) {
+      const newWork = await response.json();
+
+      allWorks.push(newWork);
+
+      displayWorks(allWorks);
+
+      displayModalWorks();
+    } else {
+      alert("Erreur lors de l'ajout du travail.");
+    }
+  } catch (error) {
+    alert("Erreur réseau.");
+  }
+}
