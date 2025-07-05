@@ -3,6 +3,10 @@ const filtersContainer = document.querySelector(".filters");
 
 let allWorks = [];
 
+const modal = document.getElementById("modal");
+const modalCloseBtn = document.querySelector(".modal-close");
+const modalGallery = document.getElementById("modal-gallery");
+
 async function fetchData() {
   try {
     // Travaux
@@ -122,11 +126,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Modal avec suppression et ajout des travaux de manière dynamique
 
-const modal = document.getElementById("modal");
-const modalWrapper = modal.querySelector(".modal-wrapper");
-const modalCloseBtn = modal.querySelector(".modal-close");
-const modalGallery = document.getElementById("modal-gallery");
-
 function openModal() {
   modal.classList.remove("hidden");
   modal.setAttribute("aria-hidden", "false");
@@ -142,6 +141,12 @@ modalCloseBtn.addEventListener("click", closeModal);
 
 modal.addEventListener("click", function (e) {
   if (e.target === modal) closeModal();
+});
+
+document.addEventListener("keydown", function (e) {
+  if (!modal.classList.contains("hidden") && e.key === "Escape") {
+    closeModal();
+  }
 });
 
 // Afficher les travaux dans la modal
@@ -169,12 +174,17 @@ function displayModalWorks() {
     modalGallery.appendChild(figure);
   });
 
+  const separator = document.createElement("div");
+  separator.className = "modal-separator";
+  separator.id = "modal-separator";
+  modalGallery.parentNode.appendChild(separator);
+
   const addBtn = document.createElement("button");
   addBtn.id = "open-add-photo";
   addBtn.className = "modal-add-btn";
   addBtn.textContent = "Ajouter une photo";
   addBtn.addEventListener("click", showAddPhotoForm);
-  modalGallery.appendChild(addBtn);
+  modalGallery.parentNode.appendChild(addBtn);
 }
 
 // On supprime le travail
@@ -210,18 +220,23 @@ async function deleteWork(workId, figureElem) {
 }
 
 function showAddPhotoForm() {
+  const separator = document.getElementById("modal-separator");
+  if (separator) separator.remove();
+  const addBtn = document.getElementById("open-add-photo");
+  if (addBtn) addBtn.remove();
+
   modalGallery.innerHTML = `
     <button type="button" id="back-to-gallery" class="modal-back-btn" aria-label="Retour à la galerie">
       <i class="fa-solid fa-arrow-left"></i>
     </button>
     <form id="add-photo-form" class="modal-form">
-      <label for="photo-file" class="custom-file-label">
+      <label for="photo-file" class="custom-file-label" id="custom-file-label">
         <i class="fa-regular fa-image"></i>
         <span>+ Ajouter photo</span>
         <span class="file-info">jpg, png : 4mo max</span>
         <input type="file" id="photo-file" name="image" accept="image/*" required>
+        <img id="file-preview" class="file-preview" style="display:none;">
       </label>
-      <img id="file-preview" class="file-preview" style="display:none;">
       <label for="photo-title">Titre</label>
       <input type="text" id="photo-title" name="title" required>
       <label for="photo-category">Catégorie</label>
@@ -253,12 +268,20 @@ function showAddPhotoForm() {
 
   const fileInput = document.getElementById("photo-file");
   const filePreview = document.getElementById("file-preview");
+  const customFileLabel = document.getElementById("custom-file-label");
+  const icon = customFileLabel.querySelector("i");
+  const addText = customFileLabel.querySelector("span");
+  const fileInfo = customFileLabel.querySelector(".file-info");
+
   fileInput.addEventListener("change", function () {
     if (this.files && this.files[0]) {
       const reader = new FileReader();
       reader.onload = function (e) {
         filePreview.src = e.target.result;
         filePreview.style.display = "block";
+        icon.style.display = "none";
+        addText.style.display = "none";
+        fileInfo.style.display = "none";
       };
       reader.readAsDataURL(this.files[0]);
     }
