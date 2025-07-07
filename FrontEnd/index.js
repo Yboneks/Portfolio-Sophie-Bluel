@@ -241,8 +241,9 @@ function showAddPhotoForm() {
       <input type="text" id="photo-title" name="title" required>
       <label for="photo-category">Catégorie</label>
       <select id="photo-category" name="category" required>
-        <option value="">Sélectionner une catégorie</option>
+        <option value=""></option>
       </select>
+       <div class="modal-separator" id="modal-separator"></div>
       <button type="submit" class="modal-submit-btn">Valider</button>
     </form>
   `;

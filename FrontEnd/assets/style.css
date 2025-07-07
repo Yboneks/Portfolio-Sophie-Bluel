@@ -507,12 +507,12 @@ main.login-part input[type="submit"]:hover {
 
 .modal-form input[type="text"],
 .modal-form select {
-  border: 1px solid #b9c5cc;
-  border-radius: 8px;
+  border: none;
   padding: 0.7rem;
   font-size: 1rem;
-  background: #f6f6f6;
+  background: white;
   color: #333;
+  box-shadow: -4px 8px 18px -8px rgba(44,62,80,0.18);
 }
 
 .modal-form input[type="file"] {
